@@ -1,0 +1,22 @@
+{
+  "name": "ihm_tablonette",
+  "version": "1.0.0",
+  "description": "IHM_Projet1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdemarta/IHM_Tablonette.git"
+  },
+  "author": "Robin Demarta & Loïc Dessaules",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rdemarta/IHM_Tablonette/issues"
+  },
+  "homepage": "https://github.com/rdemarta/IHM_Tablonette#readme",
+  "dependencies": {
+    "electron": "^10.1.3"
+  }
+}

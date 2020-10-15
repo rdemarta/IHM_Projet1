@@ -2,6 +2,21 @@ const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
 const iconPath = __dirname + '/icon.png'
 
+const notes = [
+  {
+    title: "Liste des courses",
+    content: "- Pain <br>- maggie <br> - aromat"
+  },
+  {
+    title: "Sites web interessants",
+    content: "Liste de quelques sites web interessant: <br><br> brokenfeature.com <br> jeuxvideo.com"
+  },
+  {
+    title: "Anniversaires",
+    content: "Obama: 4 août <br> Beyoncé: 4 septembre"
+  }
+];
+
 /**
  * Create the main window
  */
@@ -12,22 +27,22 @@ function createWindow () {
     center: true,
     icon: iconPath,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      //worldSafeExecuteJavaScript: true,
+      //contextIsolation: true
     }
   })
-
-  // Create and manage tray
-  createTray(mainWindow);
 
   mainWindow.loadFile('index.html')
   //mainWindow.webContents.openDevTools()
 
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('channel', {id: 1, text: "hello"})
+    mainWindow.webContents.send('received-notes', notes)
   })
 
-
-  testNotification(mainWindow);
+  // Create and manage tray
+  createTray(mainWindow);
+  //testNotification(mainWindow);
 
 }
 

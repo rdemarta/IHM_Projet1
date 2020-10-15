@@ -1,0 +1,40 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Roboto';
+    font-weight: 400;
+}
+
+#main-board {
+    padding:10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.note {
+    margin: 20px 10px 0px 10px;
+    width: 200px;
+    min-width: 200px;
+    height: 200px;
+    background-color: #F8EBC0;
+    border: 2px solid #6E4412;
+    border-radius: 8px;
+}
+
+.note__title {
+    padding: 10px;
+    color: #FFF;
+    background-color: #6E4412;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note__content {
+    padding: 8px;
+    overflow: hidden;
+    max-height: 145px;
+    text-align: justify;
+}

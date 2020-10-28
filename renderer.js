@@ -48,3 +48,36 @@ ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
     }
 
 });
+
+const btnsCloseModal = document.getElementsByClassName('modal__btn--close');
+for(let btnCloseModal of btnsCloseModal) {
+    btnCloseModal.addEventListener("click", (event) => {
+        hideModal(btnCloseModal.parentElement);
+    })
+}
+
+
+
+const btnNewNote = document.getElementById("btnNewNote");
+const btnNewTask = document.getElementById("btnNewTask");
+
+btnNewNote.addEventListener("click", (event) => {
+    const modalNote = document.getElementById("modal__newNote");
+    console.log(modalNote);
+    showModal(modalNote);
+})
+
+btnNewTask.addEventListener("click", (event) => {
+    const modalNote = document.getElementById("modal__newTask");
+    showModal(modalNote);
+})
+
+function showModal(modal){
+    modal.parentElement.style.display = "block";
+    modal.style.display = "block";
+}
+
+function hideModal(modal) {
+    modal.parentElement.style.display = "none";
+    modal.style.display = "none";
+}

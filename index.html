@@ -12,8 +12,8 @@
     <body>
 
         <header id="header">
-            <button class="btn btn--note">+ Note</button>
-            <button class="btn btn--task">+ Task</button>
+            <button id="btnNewNote" class="btn btn--note">+ Note</button>
+            <button id="btnNewTask" class="btn btn--task">+ Task</button>
             <button class="btn btn--default">+ Réorder</button>
             <div class="header__title">
                 Tablonette
@@ -36,7 +36,7 @@
         </div>
 
         <div id="main-board">
-            <!-- 
+            <!--
             <div class="note">
                 <div class="note__title">
                     Note title
@@ -47,7 +47,24 @@
             </div>
             -->
         </div>
-        
+
+
+        <div class="modal__container">
+            <div id="modal__newNote" class="modal modal--note">
+                <div class="modal__btn--close"><img src="images/close.png" alt="Close"></div>
+                Hello
+            </div>
+        </div>
+
+        <div class="modal__container">
+            <div id="modal__newTask" class="modal">
+                <div class="modal__btn--close"><img src="images/close.png" alt="Close"></div>
+                Hello
+            </div>
+        </div>
+
+
+
 
         <script src="renderer.js"></script>
     </body>

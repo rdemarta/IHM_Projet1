@@ -40,6 +40,11 @@ ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
         taskContentElem.className = "item__content item--task__content";
         taskContentElem.innerHTML = task.content; // innerHTML to interpret html tag as <br>
 
+        let taskButton = document.createElement("div");
+        taskButton.className = "btn btn--task btn--task-item";
+        taskButton.innerHTML = 'Terminer';
+
+        taskElem.appendChild(taskButton);
         taskElem.appendChild(taskTitleElem);
         taskElem.appendChild(taskSubtitleElem);
         taskElem.appendChild(taskContentElem);

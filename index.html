@@ -53,27 +53,34 @@
             <div id="modal__newNote" class="modal modal--note">
                 <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
 
-                <form action="#">
+                <div class="modal__note--title">
+                    <h1>Créer une nouvelle note</h1>
+                </div>
 
-                    <label>
-                        Titre
-                        <input class="input--note" type="text" name="title" required/>
-                    </label>
-                    <br><br>
-                    <label>
-                        Description
-                        <textarea class="input--note" name="description" rows="8" required>
+                <div class="modal__note--content">
+                    <form action="#">
+
+                        <label>
+                            Titre
+                            <input class="input--note" type="text" name="title" required/>
+                        </label>
+                        <br><br>
+                        <label>
+                            Description
+                            <textarea class="input--note" name="description" rows="8" required>
 
                         </textarea>
-                    </label>
+                        </label>
 
-                    <button class="submit btn btn--note">Valider</button>
-                </form>
+                        <button class="submit btn btn--note">Valider</button>
+                    </form>
+                </div>
+
             </div>
         </div>
 
         <div class="modal__container">
-            <div id="modal__newTask" class="modal">
+            <div id="modal__newTask" class="modal modal--task">
                 <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
                 Hello
             </div>

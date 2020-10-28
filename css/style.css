@@ -68,8 +68,8 @@ body {
 .modal {
     display: none;
     margin: 100px auto 0px;
-    padding: 50px;
-    width: 400px;
+    /*padding: 30px 50px;*/
+    width: 500px;
     min-height: 100px;
     background-color: #FFF;
     border-radius: 8px;
@@ -114,6 +114,10 @@ body {
     background-color: #F8EBC0;
 }
 
+.modal--task {
+    padding: 30px 50px;
+}
+
 .input--note {
     background-color: #D6CAA3;
     border: 2px solid rgba(110, 68, 18, 0.3);
@@ -123,6 +127,23 @@ body {
     margin: 20px auto 0px auto;
     min-width: 130px;
     display: block;
+}
+
+.modal__note--title {
+    padding: 2px 50px;
+    color: #FFF;
+    background-color: #6E4412;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.modal__note--title h1 {
+    font-size: 20px;
+    text-align: center;
+}
+
+.modal__note--content {
+    padding: 30px 50px;
 }
 
 

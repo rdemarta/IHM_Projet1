@@ -84,12 +84,9 @@ body {
     top: -23px;
     right: -23px;
     background-color: #F45555;
-    border-radius: 8px;
-    box-shadow: 0px 5px 0px #CA4747;
-}
-
-.modal__btn--close:hover {
-    cursor: pointer;
+    padding: 0;
+    border: none;
+    --box-shadow-color: #CA4747;
 }
 
 .modal__btn--close img {

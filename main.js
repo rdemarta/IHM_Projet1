@@ -2,20 +2,38 @@ const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
 const iconPath = __dirname + '/icon.png'
 
-const notes = [
-  {
-    title: "Liste des courses",
-    content: "- Pain <br>- maggie <br> - aromat"
-  },
-  {
-    title: "Sites web interessants",
-    content: "Liste de quelques sites web interessant: <br><br> brokenfeature.com <br> jeuxvideo.com"
-  },
-  {
-    title: "Anniversaires",
-    content: "Obama: 4 août <br> Beyoncé: 4 septembre"
-  }
-];
+const data = {
+  notes: [
+    {
+      title: "Liste des courses",
+      content: "- Pain <br>- maggie <br> - aromat"
+    },
+    {
+      title: "Sites web interessants",
+      content: "Liste de quelques sites web interessant: <br><br> brokenfeature.com <br> jeuxvideo.com"
+    },
+    {
+      title: "Anniversaires",
+      content: "Obama: 4 août <br> Beyoncé: 4 septembre"
+    }
+  ],
+  tasks: [
+    {
+      title: "Médoc",
+      content: "Prendre la pillule bleue",
+      dueDate: "2020-10-31 08:30",
+      repeatUnit: "day",
+      repeatValue: "1"
+    },
+    {
+      title: "Chien",
+      content: "Promener mon petit chien",
+      dueDate: "2020-11-23 09:30",
+      repeatUnit: "day",
+      repeatValue: "1"
+    }
+  ]
+};
 
 /**
  * Create the main window
@@ -37,7 +55,7 @@ function createWindow () {
   //mainWindow.webContents.openDevTools()
 
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('received-notes', notes)
+    mainWindow.webContents.send('received-notes', data)
   })
 
   // Create and manage tray

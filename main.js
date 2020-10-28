@@ -41,8 +41,8 @@ function createWindow () {
   })
 
   // Create and manage tray
-  createTray(mainWindow);
-  //testNotification(mainWindow);
+  //createTray(mainWindow);
+  testNotification(mainWindow);
 
 }
 
@@ -62,10 +62,10 @@ app.on('activate', () => {
 
 /**
  * Create and manage tray
- * 
+ *
  * It will create a tray in processbar of the OS, and when we close the window
  * it will still work in background and can be accessible on the tray to show it again or close it.
- * @param mainWindow 
+ * @param mainWindow
  */
 function createTray(mainWindow){
   let tray = new Tray(iconPath)
@@ -109,11 +109,16 @@ function testNotification(mainWindow) {
       icon: iconPath,
       timeoutType: "never",
     })
-    
+
     notification.on('click', (event, arg)=>{
       mainWindow.show();
     })
-  
+
+    notification.on('show', (event, arg)=>{
+      app.setBadgeCount(2);
+      console.log(app.getBadgeCount());
+    })
+
     notification.show();
   }, 2000);
 }

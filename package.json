@@ -1,23 +1,37 @@
 {
-  "name": "ihm_tablonette",
-  "version": "1.0.0",
+  "name": "tablonette",
   "description": "IHM_Projet1",
+  "desktopName": "tablonette.desktop",
+  "version": "1.0.0",
+  "author": "Robin Demarta <robin.demarta@heig-vd.ch>",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rdemarta/IHM_Tablonette.git"
   },
-  "author": "Robin Demarta & Loïc Dessaules",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rdemarta/IHM_Tablonette/issues"
   },
   "homepage": "https://github.com/rdemarta/IHM_Tablonette#readme",
-  "dependencies": {
-    "electron": "^10.1.3"
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^10.1.5",
+    "electron-builder": "^22.9.1"
+  },
+  "build": {
+    "appId": "tablonette",
+    "productName": "tablonette",
+    "linux": {
+      "icon": "./icon.icns",
+      "target": [
+        "deb"
+      ]
+    }
   }
 }

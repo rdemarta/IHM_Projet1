@@ -82,6 +82,8 @@ body {
     display: inline-block;
     margin-top: 5px;
     padding: 5px;
+    max-width: 100%; /* for text area if try to resize the area */
+    min-width: 100%; /* for text area if try to resize the area */
 }
 
 .modal label {

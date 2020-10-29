@@ -132,7 +132,9 @@ const formCreateNote = document.getElementById('formCreateNote');
 formCreateNote.onsubmit = (event) => {
     event.preventDefault();
 
-    const note = fetchFormDataAsObject(formCreateNote)
+    // Generate new note
+    let note = fetchFormDataAsObject(formCreateNote)
+    note.uuid = UUID();
 
     // Add the note to the board
     addNoteToBoard(mainBoard, note);
@@ -140,6 +142,9 @@ formCreateNote.onsubmit = (event) => {
     // Reset the form and close the modal
     formCreateNote.reset();
     hideModal(formCreateNote.closest('.modal'));
+
+    // send note to main process to store it
+    ipcRenderer.send("CH_NOTE", note);
 }
 
 

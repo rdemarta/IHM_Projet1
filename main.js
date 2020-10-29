@@ -1,22 +1,11 @@
 const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
+const DataStore = require("./DataStore");
 const iconPath = __dirname + '/icon.png'
+const notesData = new DataStore({name: 'Notes'});
 
 const data = {
-  notes: [
-    {
-      title: "Liste des courses",
-      content: "- Pain <br>- maggie <br> - aromat"
-    },
-    {
-      title: "Sites web interessants",
-      content: "Liste de quelques sites web interessant: <br><br> brokenfeature.com <br> jeuxvideo.com"
-    },
-    {
-      title: "Anniversaires",
-      content: "Obama: 4 août <br> Beyoncé: 4 septembre"
-    }
-  ],
+  notes: notesData.getNotes()['notes'],
   tasks: [
     {
       title: "Médoc",
@@ -77,6 +66,14 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+/**
+ * IPC for NOTE from renderer
+ */
+ipc.on("CH_NOTE", (event, note) => {
+  notesData.addNote(note);
+  console.log(`Successfully stored a new note "${note.title}"`);
+});
 
 /**
  * Create and manage tray

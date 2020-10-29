@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/rdemarta/IHM_Tablonette#readme",
   "dependencies": {
+    "electron-store": "^6.0.1",
     "uuid-v4": "^0.1.0"
   },
   "devDependencies": {

@@ -53,11 +53,11 @@
             <div id="modal__newNote" class="modal modal--note">
                 <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
 
-                <div class="modal__note--title">
+                <div class="modal__title modal__title--note">
                     <h1>Créer une nouvelle note</h1>
                 </div>
 
-                <div class="modal__note--content">
+                <div class="modal__content">
                     <form id="formCreateNote" action="#">
 
                         <label>
@@ -78,9 +78,30 @@
         </div>
 
         <div class="modal__container">
-            <div id="modal__newTask" class="modal modal--task">
+            <div id="modal__newTask" class="modal">
                 <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
-                Hello
+
+                <div class="modal__title modal__title--task">
+                    <h1>Créer une nouvelle tâche</h1>
+                </div>
+
+                <div class="modal__content">
+                    <form id="formCreateTask" action="#">
+
+                        <label>
+                            Titre
+                            <input class="input--task" type="text" name="title" required />
+                        </label>
+                        <br><br>
+                        <label>
+                            Description
+                            <textarea class="input--task" name="content" rows="8" required></textarea>
+                        </label>
+
+                        <button class="btn btn--task btn--submit">Valider</button>
+                    </form>
+                </div>
+
             </div>
         </div>
 

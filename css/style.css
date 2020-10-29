@@ -82,6 +82,7 @@ body {
     display: inline-block;
     margin-top: 5px;
     padding: 5px;
+    border-radius: 8px;
     max-width: 100%; /* for text area if try to resize the area */
     min-width: 100%; /* for text area if try to resize the area */
 }
@@ -114,13 +115,14 @@ body {
     background-color: #F8EBC0;
 }
 
-.modal--task {
-    padding: 30px 50px;
-}
-
 .input--note {
     background-color: #D6CAA3;
     border: 2px solid rgba(110, 68, 18, 0.3);
+}
+
+.input--task {
+    background-color: rgba(91, 145, 179, 0.25);
+    border: none;
 }
 
 .modal form .btn--submit {
@@ -129,20 +131,19 @@ body {
     display: block;
 }
 
-.modal__note--title {
+.modal__title {
     padding: 2px 50px;
+    text-align: center;
+}
+
+.modal__title--note {
     color: #FFF;
     background-color: #6E4412;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
-.modal__note--title h1 {
-    font-size: 20px;
-    text-align: center;
-}
-
-.modal__note--content {
+.modal__content {
     padding: 30px 50px;
 }
 

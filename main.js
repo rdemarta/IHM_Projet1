@@ -2,7 +2,7 @@ const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
 const DataStore = require("./DataStore");
 const iconPath = __dirname + '/icon.png'
-const notesData = new DataStore({name: 'Notes'});
+const notesData = new DataStore({name: 'Notes'}); // Will create a ~/.config/tablonette/Notes.json file
 
 const data = {
   notes: notesData.getNotes()['notes'],

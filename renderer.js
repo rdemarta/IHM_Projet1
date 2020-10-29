@@ -80,10 +80,8 @@ function toggleById(id){
     let element = document.getElementById(id);
     if(window.getComputedStyle(element).display === 'none') { // Show element
         element.style.display = 'block';
-        console.log(id+' -> block');
     } else { // Hide element
         element.style.display = 'none';
-        console.log(id+' -> none');
     }
 }
 

@@ -58,21 +58,19 @@
                 </div>
 
                 <div class="modal__note--content">
-                    <form action="#">
+                    <form id="formCreateNote" action="#">
 
                         <label>
                             Titre
-                            <input class="input--note" type="text" name="title" required/>
+                            <input class="input--note" type="text" name="title" required />
                         </label>
                         <br><br>
                         <label>
                             Description
-                            <textarea class="input--note" name="description" rows="8" required>
-
-                        </textarea>
+                            <textarea class="input--note" name="content" rows="8" required></textarea>
                         </label>
 
-                        <button class="submit btn btn--note">Valider</button>
+                        <button class="btn btn--note btn--submit">Valider</button>
                     </form>
                 </div>
 
@@ -89,6 +87,6 @@
 
 
 
-        <script type="module" src="renderer.js"></script>
+        <script src="renderer.js"></script>
     </body>
 </html>

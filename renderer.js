@@ -1,10 +1,9 @@
 const { ipcRenderer } = require('electron');
 const UUID = require('uuid-v4');
+const mainBoard = document.getElementById('main-board');
 
 // When we received some notes -> Create the notes and tasks DOM and display it
 ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
-    let mainBoard = document.getElementById('main-board');
-
     // Display notes
     for (let note of data.notes) {
         addNoteToBoard(mainBoard, note);
@@ -91,6 +90,22 @@ function hideModal(modal) {
     modal.style.display = "none";
 }
 
+/**
+ * Loop through all form data, fetch them and create an object to return it
+ * @param form The form element
+ * @returns An object that contains all form data
+ */
+function fetchFormDataAsObject(form) {
+    // Retrieve data from the form and populate the note object
+    let obj = {};
+    const formData = new FormData(form);
+    for (let pair of formData.entries()) {
+        obj[pair[0]] = pair[1];
+    }
+
+    return obj;
+}
+
 // Close modals on click functionality
 const btnsCloseModal = document.getElementsByClassName('modal__btn--close');
 for(let btnCloseModal of btnsCloseModal) {
@@ -108,8 +123,25 @@ btnNewNote.addEventListener("click", (event) => {
     console.log(modalNote);
     showModal(modalNote);
 })
-
 btnNewTask.addEventListener("click", (event) => {
     const modalNote = document.getElementById("modal__newTask");
     showModal(modalNote);
 })
+
+const formCreateNote = document.getElementById('formCreateNote');
+formCreateNote.onsubmit = (event) => {
+    event.preventDefault();
+
+    const note = fetchFormDataAsObject(formCreateNote)
+
+    // Add the note to the board
+    addNoteToBoard(mainBoard, note);
+
+    // Reset the form and close the modal
+    formCreateNote.reset();
+    hideModal(formCreateNote.closest('.modal'));
+}
+
+
+
+

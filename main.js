@@ -52,7 +52,7 @@ function createWindow () {
   })
 
   mainWindow.loadFile('index.html')
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('received-notes', data)

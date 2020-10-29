@@ -73,21 +73,18 @@ function addTaskToBoard(board, task) {
 }
 
 /**
- * Show a specific modal element
- * @param modal
+ * Show a specific element
+ * @param id
  */
-function showModal(modal){
-    modal.parentElement.style.display = "block";
-    modal.style.display = "block";
-}
-
-/**
- * Hide a specific modal element
- * @param modal
- */
-function hideModal(modal) {
-    modal.parentElement.style.display = "none";
-    modal.style.display = "none";
+function toggleById(id){
+    let element = document.getElementById(id);
+    if(window.getComputedStyle(element).display === 'none') { // Show element
+        element.style.display = 'block';
+        console.log(id+' -> block');
+    } else { // Hide element
+        element.style.display = 'none';
+        console.log(id+' -> none');
+    }
 }
 
 /**
@@ -106,28 +103,6 @@ function fetchFormDataAsObject(form) {
     return obj;
 }
 
-// Close modals on click functionality
-const btnsCloseModal = document.getElementsByClassName('modal__btn--close');
-for(let btnCloseModal of btnsCloseModal) {
-    btnCloseModal.addEventListener("click", (event) => {
-        hideModal(btnCloseModal.parentElement);
-    })
-}
-
-
-const btnNewNote = document.getElementById("btnNewNote");
-const btnNewTask = document.getElementById("btnNewTask");
-
-btnNewNote.addEventListener("click", (event) => {
-    const modalNote = document.getElementById("modal__newNote");
-    console.log(modalNote);
-    showModal(modalNote);
-})
-btnNewTask.addEventListener("click", (event) => {
-    const modalNote = document.getElementById("modal__newTask");
-    showModal(modalNote);
-})
-
 const formCreateNote = document.getElementById('formCreateNote');
 formCreateNote.onsubmit = (event) => {
     event.preventDefault();
@@ -141,7 +116,7 @@ formCreateNote.onsubmit = (event) => {
 
     // Reset the form and close the modal
     formCreateNote.reset();
-    hideModal(formCreateNote.closest('.modal'));
+    toggleById('modal--newNote');
 
     // send note to main process to store it
     ipcRenderer.send("CH_NOTE", note);

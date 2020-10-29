@@ -12,8 +12,8 @@
     <body>
 
         <header id="header">
-            <button id="btnNewNote" class="btn btn--note">+ Note</button>
-            <button id="btnNewTask" class="btn btn--task">+ Task</button>
+            <button id="btnNewNote" class="btn btn--note" onclick="toggleById('modal--newNote')">+ Note</button>
+            <button id="btnNewTask" class="btn btn--task" onclick="toggleById('modal--newTask')">+ Task</button>
             <button class="btn btn--default">+ Réorder</button>
             <div class="header__title">
                 Tablonette
@@ -49,9 +49,11 @@
         </div>
 
 
-        <div class="modal__container">
-            <div id="modal__newNote" class="modal modal--note">
-                <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
+        <div id="modal--newNote" class="modal__container">
+            <div class="modal modal--note">
+                <div class="btn modal__btn--close" onclick="toggleById('modal--newNote')">
+                    <img src="images/close.png" alt="Close">
+                </div>
 
                 <div class="modal__title modal__title--note">
                     <h1>Créer une nouvelle note</h1>
@@ -77,9 +79,11 @@
             </div>
         </div>
 
-        <div class="modal__container">
-            <div id="modal__newTask" class="modal">
-                <div class="btn modal__btn--close"><img src="images/close.png" alt="Close"></div>
+        <div id="modal--newTask" class="modal__container">
+            <div class="modal">
+                <div class="btn modal__btn--close" onclick="toggleById('modal--newTask')">
+                    <img src="images/close.png" alt="Close">
+                </div>
 
                 <div class="modal__title modal__title--task">
                     <h1>Créer une nouvelle tâche</h1>

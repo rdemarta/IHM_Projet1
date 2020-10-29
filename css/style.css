@@ -66,9 +66,7 @@ body {
 }
 
 .modal {
-    display: none;
     margin: 100px auto 0px;
-    /*padding: 30px 50px;*/
     width: 500px;
     min-height: 100px;
     background-color: #FFF;

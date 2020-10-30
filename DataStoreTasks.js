@@ -22,6 +22,16 @@ class DataStoreTasks extends Store {
         return this;
     }
 
+    getTask(uuid) {
+        for(let task of this.get('tasks')) {
+            if(task.uuid === uuid) {
+                return task;
+            }
+        }
+
+        return null;
+    }
+
     addTask(task) {
         // Merge existing tasks with new task
         this.tasks  =  [...this.tasks, task];

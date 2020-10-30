@@ -1,10 +1,12 @@
 const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
+const UUID = require('uuid-v4');
 const DataStoreNotes = require("./DataStoreNotes");
 const DataStoreTasks = require("./DataStoreTasks");
 const iconPath = __dirname + '/icon.png'
 const notesData = new DataStoreNotes({name: 'Notes'}); // Will create a ~/.config/tablonette/Notes.json file
 const tasksData = new DataStoreTasks({name: 'Tasks'}); // Will create a ~/.config/tablonette/Tasks.json file
+let mainWindow;
 
 const data = {
   notes: notesData.getNotes()['notes'],
@@ -15,7 +17,7 @@ const data = {
  * Create the main window
  */
 function createWindow () {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     center: true,
@@ -31,7 +33,7 @@ function createWindow () {
   mainWindow.webContents.openDevTools()
 
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('received-notes', data)
+    mainWindow.webContents.send('received-items', data)
   })
 
   // Create and manage tray
@@ -84,6 +86,47 @@ ipc.on("DELETE_NOTE", (event, uuid) => {
 ipc.on("DELETE_TASK", (event, uuid) => {
   tasksData.deleteTask(uuid);
   console.log(`Successfully deleted task "${uuid}"`);
+});
+
+/**
+ * IPC to complete a task (and create the next one)
+ */
+ipc.on("COMPLETE_TASK", (event, uuid) => {
+  let task = tasksData.getTask(uuid);
+
+  // Check if the task should repeat
+  if(task.toggleDueDate != null && task.toggleRepeat != null && task.dueDate != null) {
+    // Create new task
+    let newDate = new Date(task.dueDate);
+    let valueToAdd = parseInt(task.repeatValue);
+
+    switch(task.repeatUnit) {
+        case 'heures':
+            newDate.setHours(newDate.getHours() + valueToAdd)
+            break;
+        case 'jours':
+            newDate.setDate(newDate.getDate() + valueToAdd)
+            break;
+        case 'mois':
+            newDate.setMonth(newDate.getMonth() + valueToAdd)
+            break;
+        case 'années':
+            newDate.setFullYear(newDate.getFullYear() + valueToAdd)
+            break;
+        default:
+            break;
+    }
+
+    // Renew task
+    task.uuid = UUID();
+    task.dueDate = newDate;
+    tasksData.addTask(task);
+
+    // Ask renderer to display new task
+    mainWindow.webContents.send('received-items', {notes:[], tasks: [task]});
+  }
+
+  tasksData.deleteTask(uuid);
 });
 
 /**

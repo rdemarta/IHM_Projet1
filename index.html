@@ -158,7 +158,7 @@
                     <img src="images/close.png" alt="Close">
                 </div>
 
-                <button id="btn__complete" class="btn btn--task"><img src="images/complete.png" alt="Terminer">Terminer</button>
+                <button id="btn__complete" class="btn btn--task" onclick="completeTask(this.dataset.uuid)"><img src="images/complete.png" alt="Terminer">Terminer</button>
                 <button id="btn__edit--task" class="btn btn--task"><img src="images/edit.png" alt="Modifier">Modifier</button>
                 <button id="btn__delete--task" class="btn btn--task" data-uuid="" onclick="deleteTaskByUUID(this.dataset.uuid)"><img src="images/trash.png" alt="Supprimer">Supprimer</button>
 

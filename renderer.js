@@ -5,7 +5,7 @@ const notesBoard = document.getElementById('notes-board');
 const tasksBoard = document.getElementById('tasks-board');
 
 // When we received some notes -> Create the notes and tasks DOM and display it
-ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
+ipcRenderer.on('received-items', (event, data) => { // IPC event listener
     // Display notes
     for (let note of data.notes) {
         addNoteToBoard(notesBoard, note);
@@ -134,7 +134,7 @@ function showTask(task) {
 
         // Add the data-uuid into delete btn html
         // (useful to pass the uuid with the html onClick() function)
-        if(child.id === 'btn__delete--task'){
+        if(child.id === 'btn__delete--task' ||child.id === 'btn__complete'){
             child.dataset.uuid = task.uuid;
         }
     }
@@ -184,6 +184,21 @@ function deleteTaskByUUID(uuid) {
     }
 
     // Hide the showNote modal (from where we can delete the task)
+    toggleById('modal--showTask');
+}
+
+function completeTask(uuid) {
+    ipcRenderer.send("COMPLETE_TASK", uuid);
+
+    // Hide completed task
+    for(const task of document.getElementsByClassName('item--task')){
+        if(task.dataset.uuid === uuid){
+            task.remove();
+            break;
+        }
+    }
+
+    // Close modal window
     toggleById('modal--showTask');
 }
 
@@ -240,19 +255,18 @@ const formCreateTask = document.getElementById('formCreateTask');
 formCreateTask.onsubmit = (event) => {
     event.preventDefault();
 
-    // Generate new note
+    // Generate new task
     let task = fetchFormDataAsObject(formCreateTask)
     task.uuid = UUID();
-    console.log(task);
 
-    // Add the note to the board
+    // Add the task to the board
     addTaskToBoard(mainBoard, task);
 
     // Reset the form and close the modal
     formCreateTask.reset();
     toggleById('modal--newTask');
 
-    // send note to main process to store it
+    // send task to main process to store it
     ipcRenderer.send("ADD_TASK", task);
 }
 

@@ -53,6 +53,7 @@ function addNoteToBoard(board, note) {
 function addTaskToBoard(board, task) {
     let taskElem = document.createElement("div");
     taskElem.className = "item item--task";
+    taskElem.dataset.uuid = task.uuid;
 
     let taskTitleElem = document.createElement("div");
     taskTitleElem.className = "item__title item--task__title";
@@ -143,7 +144,7 @@ function showTask(task) {
 }
 
 /**
- * Delete a note by it's uuid
+ * Delete a note by its uuid
  * Send to the main process a message to delete it and hide the modal
  * @param uuid The note uuid we want to delete
  */
@@ -162,6 +163,28 @@ function deleteNoteByUUID(uuid) {
 
     // Hide the showNote modal (from where we can delete the note)
     toggleById('modal--showNote');
+}
+
+/**
+ * Delete a task by its uuid
+ * Send to the main process a message to delete it and hide the modal
+ * @param uuid The note uuid we want to delete
+ */
+function deleteTaskByUUID(uuid) {
+    // send uuid to main process to delete it
+    ipcRenderer.send("DELETE_NOTE", uuid);
+
+    // remove the note from HTML
+    // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
+    for(const itemTask of document.getElementsByClassName('item--task')){
+        if(itemTask.dataset.uuid === uuid){
+            itemTask.remove();
+            break;
+        }
+    }
+
+    // Hide the showNote modal (from where we can delete the task)
+    toggleById('modal--showTask');
 }
 
 /**

@@ -172,7 +172,7 @@ function deleteNoteByUUID(uuid) {
  */
 function deleteTaskByUUID(uuid) {
     // send uuid to main process to delete it
-    ipcRenderer.send("DELETE_NOTE", uuid);
+    ipcRenderer.send("DELETE_TASK", uuid);
 
     // remove the note from HTML
     // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)

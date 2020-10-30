@@ -1,17 +1,19 @@
 const { ipcRenderer } = require('electron');
 const UUID = require('uuid-v4');
 const mainBoard = document.getElementById('main-board');
+const notesBoard = document.getElementById('notes-board');
+const tasksBoard = document.getElementById('tasks-board');
 
 // When we received some notes -> Create the notes and tasks DOM and display it
 ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
     // Display notes
     for (let note of data.notes) {
-        addNoteToBoard(mainBoard, note);
+        addNoteToBoard(notesBoard, note);
     }
 
     // Display tasks
     for (let task of data.tasks) {
-        addTaskToBoard(mainBoard, task);
+        addTaskToBoard(tasksBoard, task);
     }
 
 });

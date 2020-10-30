@@ -75,6 +75,9 @@ function addTaskToBoard(board, task) {
     taskElem.appendChild(taskSubtitleElem);
     taskElem.appendChild(taskContentElem);
 
+    // Click event listener to open task detail
+    taskElem.addEventListener("click", (event) => showTask(task));
+
     board.append(taskElem);
 }
 
@@ -106,6 +109,37 @@ function showNote(note) {
 
     // Display the modal
     toggleById(showNoteModalID);
+}
+
+/**
+ * Fill the show note modal with the current clicked note and
+ * display the modal
+ * @param task The clicked note object
+ */
+function showTask(task) {
+    const showTaskModalID = "modal--showTask";
+    let showTaskModal = document.getElementById(showTaskModalID)
+    for(let child of showTaskModal.children[0].children){
+        // Fill the title
+        if(child.className === 'modal__title modal__title--task'){
+            child.children[0].innerHTML = task.title;
+            child.children[1].innerHTML = 'A faire chaque ' + task.repeatValue + ' ' + task.repeatUnit;
+        }
+
+        // Fill the content
+        if(child.className === 'modal__content'){
+            child.innerHTML = task.content;
+        }
+
+        // Add the data-uuid into delete btn html
+        // (useful to pass the uuid with the html onClick() function)
+        if(child.id === 'btn__delete--task'){
+            child.dataset.uuid = task.uuid;
+        }
+    }
+
+    // Display the modal
+    toggleById(showTaskModalID);
 }
 
 /**

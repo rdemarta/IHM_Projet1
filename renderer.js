@@ -142,5 +142,18 @@ formCreateNote.onsubmit = (event) => {
 }
 
 
+/**
+ * Each time we press the escape key, will hide all modal open
+ * (Not opti because call a lof if long press but works, no need refactor now)
+ */
+document.addEventListener('keydown', (event) =>{
+   if(event.key === 'Escape'){
+       for(let modal of document.getElementsByClassName('modal__container')) {
+           if(window.getComputedStyle(modal).display === 'block') { // Show element
+               modal.style.display = 'none';
+           }
+       }
+   }
+});
 
 

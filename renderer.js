@@ -256,7 +256,7 @@ formCreateNote.onsubmit = (event) => {
     note.uuid = UUID();
 
     // Add the note to the board
-    addNoteToBoard(mainBoard, note);
+    addNoteToBoard(notesBoard, note);
 
     // Reset the form and close the modal
     formCreateNote.reset();
@@ -275,7 +275,7 @@ formCreateTask.onsubmit = (event) => {
     task.uuid = UUID();
 
     // Add the task to the board
-    addTaskToBoard(mainBoard, task);
+    addTaskToBoard(tasksBoard, task);
 
     // Reset the form and close the modal
     formCreateTask.reset();

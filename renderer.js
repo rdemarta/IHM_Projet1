@@ -78,23 +78,41 @@ function addTaskToBoard(board, task) {
     board.append(taskElem);
 }
 
+/**
+ * Fill the show note modal with the current clicked note and
+ * display the modal
+ * @param note The clicked note object
+ */
 function showNote(note) {
     const showNoteModalID = "modal--showNote";
     let showNoteModal = document.getElementById(showNoteModalID)
     for(let child of showNoteModal.children[0].children){
+        // Fill the title
         if(child.className === 'modal__title modal__title--note'){
             child.children[0].innerHTML = note.title;
         }
+
+        // Fill the content
         if(child.className === 'modal__content'){
             child.innerHTML = note.content;
         }
+
+        // Add the data-uuid into delete btn html
+        // (useful to pass the uuid with the html onClick() function)
         if(child.id === 'btn__delete--note'){
             child.dataset.uuid = note.uuid;
         }
     }
+
+    // Display the modal
     toggleById(showNoteModalID);
 }
 
+/**
+ * Delete a note by it's uuid
+ * Send to the main process a message to delete it and hide the modal
+ * @param uuid The note uuid we want to delete
+ */
 function deleteNoteByUUID(uuid) {
     // send uuid to main process to delete it
     ipcRenderer.send("DELETE_NOTE", uuid);

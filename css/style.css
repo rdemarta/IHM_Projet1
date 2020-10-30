@@ -14,7 +14,7 @@ body {
     --box-shadow-color: #555;
     box-shadow: 0 4px 0 0 var(--box-shadow-color);
     border: 1px solid var(--box-shadow-color);
-    outline:none;
+    outline: none;
     transition-duration: 0.05s;
 }
 
@@ -54,7 +54,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
 }
@@ -75,7 +75,7 @@ body {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.modal form input, .modal form textarea {
+.modal form input, .modal form textarea, .modal form select {
     width: 100%;
     display: inline-block;
     margin-top: 5px;
@@ -121,6 +121,17 @@ body {
 .input--task {
     background-color: rgba(91, 145, 179, 0.25);
     border: none;
+}
+
+.input--task[type=checkbox] {
+    width: auto;
+    display: inline-block;
+    min-width: 0;
+}
+
+.input--task.small {
+    width: 90px;
+    min-width: 0;
 }
 
 .modal form .btn--submit {
@@ -176,8 +187,6 @@ body {
 }
 
 
-
-
 #today-board {
     padding: 20px 20px 40px 20px;
     background-color: #F5FCFF;
@@ -191,11 +200,8 @@ body {
 }
 
 
-
-
-
 #main-board {
-    padding:10px;
+    padding: 10px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -217,6 +223,7 @@ body {
     text-overflow: ellipsis;
     font-weight: bold;
 }
+
 .item__content {
     padding: 8px;
     overflow: hidden;
@@ -255,4 +262,8 @@ body {
 }
 
 .item--task__content {
+}
+
+.hidden {
+    display: none;
 }

@@ -75,11 +75,12 @@ function addTaskToBoard(board, task) {
 /**
  * Show a specific element
  * @param id
+ * @param displayStyle
  */
-function toggleById(id){
+function toggleById(id, displayStyle = 'block'){
     let element = document.getElementById(id);
     if(window.getComputedStyle(element).display === 'none') { // Show element
-        element.style.display = 'block';
+        element.style.display = displayStyle;
     } else { // Hide element
         element.style.display = 'none';
     }

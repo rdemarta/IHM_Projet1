@@ -98,6 +98,28 @@
                         </label>
                         <br><br>
                         <label>
+                            <input class="input--task" type="checkbox" name="toggleDueDate" onchange="toggleById('dueDateDiv')" />
+                            Date d'échéance
+                            <div id="dueDateDiv" class="hidden">
+                                <input class="input--task" type="datetime-local" name="title" />
+                                <br><br>
+                                <label>
+                                    <input class="input--task" type="checkbox" name="toggleRepeat" onchange="toggleById('repeatDiv', 'inline-block')" />
+                                    Répéter
+                                    <div id="repeatDiv" class="hidden">
+                                        chaque <input type="number" class="input--task small" value="1" min="1" />
+                                        <select class="input--task small">
+                                            <option>heures</option>
+                                            <option>jours</option>
+                                            <option>mois</option>
+                                            <option>années</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                        </label>
+                        <br><br>
+                        <label>
                             Description
                             <textarea class="input--task" name="content" rows="8" required></textarea>
                         </label>

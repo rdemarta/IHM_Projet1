@@ -179,6 +179,26 @@ formCreateNote.onsubmit = (event) => {
     ipcRenderer.send("ADD_NOTE", note);
 }
 
+const formCreateTask = document.getElementById('formCreateTask');
+formCreateTask.onsubmit = (event) => {
+    event.preventDefault();
+
+    // Generate new note
+    let task = fetchFormDataAsObject(formCreateTask)
+    task.uuid = UUID();
+    console.log(task);
+
+    // Add the note to the board
+    addTaskToBoard(mainBoard, task);
+
+    // Reset the form and close the modal
+    formCreateTask.reset();
+    toggleById('modal--newTask');
+
+    // send note to main process to store it
+    ipcRenderer.send("ADD_TASK", task);
+}
+
 
 /**
  * Each time we press the escape key, will hide all modal open

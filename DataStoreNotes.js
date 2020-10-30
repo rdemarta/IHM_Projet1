@@ -1,12 +1,11 @@
 const Store = require('electron-store');
 
-class DataStore extends Store {
+class DataStoreNotes extends Store {
 
     constructor(settings) {
         super(settings);
 
         this.notes = this.get('notes') || [];
-        //this.tasks = this.get('tasks') || [];
     }
 
     saveNotes() {
@@ -39,4 +38,4 @@ class DataStore extends Store {
 
 }
 
-module.exports = DataStore;
+module.exports = DataStoreNotes;

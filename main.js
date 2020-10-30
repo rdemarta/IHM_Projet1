@@ -1,27 +1,14 @@
 const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
 const ipc = require('electron').ipcMain
-const DataStore = require("./DataStore");
+const DataStoreNotes = require("./DataStoreNotes");
+const DataStoreTasks = require("./DataStoreTasks");
 const iconPath = __dirname + '/icon.png'
-const notesData = new DataStore({name: 'Notes'}); // Will create a ~/.config/tablonette/Notes.json file
+const notesData = new DataStoreNotes({name: 'Notes'}); // Will create a ~/.config/tablonette/Notes.json file
+const tasksData = new DataStoreTasks({name: 'Tasks'}); // Will create a ~/.config/tablonette/Tasks.json file
 
 const data = {
   notes: notesData.getNotes()['notes'],
-  tasks: [
-    {
-      title: "Médoc",
-      content: "Prendre la pillule bleue",
-      dueDate: "2020-10-31 08:30",
-      repeatUnit: "day",
-      repeatValue: "1"
-    },
-    {
-      title: "Chien",
-      content: "Promener mon petit chien",
-      dueDate: "2020-11-23 09:30",
-      repeatUnit: "day",
-      repeatValue: "1"
-    }
-  ]
+  tasks: tasksData.getTasks()['tasks']
 };
 
 /**
@@ -68,7 +55,7 @@ app.on('activate', () => {
 })
 
 /**
- * IPC for add note from renderer
+ * IPC to add note from renderer
  */
 ipc.on("ADD_NOTE", (event, note) => {
   notesData.addNote(note);
@@ -76,11 +63,27 @@ ipc.on("ADD_NOTE", (event, note) => {
 });
 
 /**
- * IPC for delete note from renderer
+ * IPC to add task from renderer
+ */
+ipc.on("ADD_TASK", (event, task) => {
+  tasksData.addTask(task);
+  console.log(`Successfully stored a new note "${task.title}"`);
+});
+
+/**
+ * IPC to delete note from renderer
  */
 ipc.on("DELETE_NOTE", (event, uuid) => {
   notesData.deleteNote(uuid);
   console.log(`Successfully deleted note "${uuid}"`);
+});
+
+/**
+ * IPC to delete task from renderer
+ */
+ipc.on("DELETE_TASK", (event, uuid) => {
+  tasksData.deleteTask(uuid);
+  console.log(`Successfully deleted task "${uuid}"`);
 });
 
 /**

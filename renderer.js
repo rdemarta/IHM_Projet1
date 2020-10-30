@@ -59,9 +59,6 @@ function addTaskToBoard(board, task) {
     taskTitleElem.className = "item__title item--task__title";
     taskTitleElem.textContent = task.title;
 
-    let taskSubtitleElem = document.createElement("div");
-    taskSubtitleElem.className = "item__title item--task__subtitle";
-    taskSubtitleElem.textContent = 'Pour le ' + task.dueDate;
 
     let taskContentElem = document.createElement("div");
     taskContentElem.className = "item__content item--task__content";
@@ -73,8 +70,17 @@ function addTaskToBoard(board, task) {
 
     taskElem.appendChild(taskButton);
     taskElem.appendChild(taskTitleElem);
-    taskElem.appendChild(taskSubtitleElem);
+
+    if(task.dueDate !== '') {
+        let taskSubtitleElem = document.createElement("div");
+        taskSubtitleElem.className = "item__title item--task__subtitle";
+        taskSubtitleElem.textContent = 'Pour le ' + task.dueDate;
+        taskElem.appendChild(taskSubtitleElem);
+    }
+    // TODO "repeat every" attributes
+
     taskElem.appendChild(taskContentElem);
+
 
     // Click event listener to open task detail
     taskElem.addEventListener("click", (event) => showTask(task));
@@ -124,7 +130,16 @@ function showTask(task) {
         // Fill the title
         if(child.className === 'modal__title modal__title--task'){
             child.children[0].innerHTML = task.title;
-            child.children[1].innerHTML = 'A faire chaque ' + task.repeatValue + ' ' + task.repeatUnit;
+            if(task.dueDate !== '') {
+                child.children[1].innerHTML = 'Pour le ' + task.dueDate;
+            } else {
+                child.children[1].innerHTML = '';
+            }
+            if(task.toggleRepeat != null) {
+                child.children[1].innerHTML = 'A faire chaque ' + task.repeatValue + ' ' + task.repeatUnit;
+            } else {
+                child.children[1].innerHTML = '';
+            }
         }
 
         // Fill the content

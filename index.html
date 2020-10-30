@@ -132,12 +132,13 @@
 
         <div id="modal--showNote" class="modal__container">
             <div class="modal modal--note">
+
                 <div class="btn modal__btn--close" onclick="toggleById('modal--showNote')">
                     <img src="images/close.png" alt="Close">
                 </div>
 
-                <button id="btn__edit--note" class="btn btn--note" onclick=""><img src="images/edit.png" alt="Modifier">Modifier</button>
-                <button id="btn__delete--note" class="btn btn--note" onclick=""><img src="images/trash.png" alt="Supprimer">Supprimer</button>
+                <button id="btn__edit--note" class="btn btn--note"><img src="images/edit.png" alt="Modifier">Modifier</button>
+                <button id="btn__delete--note" class="btn btn--note" data-uuid="" onclick="deleteNoteByUUID(this.dataset.uuid)"><img src="images/trash.png" alt="Supprimer">Supprimer</button>
 
                 <div class="modal__title modal__title--note">
                     <h1>Title</h1>

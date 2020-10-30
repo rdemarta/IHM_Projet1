@@ -68,11 +68,19 @@ app.on('activate', () => {
 })
 
 /**
- * IPC for NOTE from renderer
+ * IPC for add note from renderer
  */
-ipc.on("CH_NOTE", (event, note) => {
+ipc.on("ADD_NOTE", (event, note) => {
   notesData.addNote(note);
   console.log(`Successfully stored a new note "${note.title}"`);
+});
+
+/**
+ * IPC for delete note from renderer
+ */
+ipc.on("DELETE_NOTE", (event, uuid) => {
+  notesData.deleteNote(uuid);
+  console.log(`Successfully deleted note "${uuid}"`);
 });
 
 /**

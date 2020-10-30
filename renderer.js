@@ -26,6 +26,7 @@ ipcRenderer.on('received-notes', (event, data) => { // IPC event listener
 function addNoteToBoard(board, note) {
     let noteElem = document.createElement("div");
     noteElem.className = "item item--note";
+    noteElem.dataset.uuid = note.uuid;
 
     let noteTitleElem = document.createElement("div");
     noteTitleElem.className = "item__title item--note__title";
@@ -87,10 +88,29 @@ function showNote(note) {
         if(child.className === 'modal__content'){
             child.innerHTML = note.content;
         }
+        if(child.id === 'btn__delete--note'){
+            child.dataset.uuid = note.uuid;
+        }
     }
     toggleById(showNoteModalID);
 }
 
+function deleteNoteByUUID(uuid) {
+    // send uuid to main process to delete it
+    ipcRenderer.send("DELETE_NOTE", uuid);
+
+    // remove the note from HTML
+    // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
+    for(const itemNote of document.getElementsByClassName('item--note')){
+        if(itemNote.dataset.uuid === uuid){
+            itemNote.remove();
+            break;
+        }
+    }
+
+    // Hide the showNote modal (from where we can delete the note)
+    toggleById('modal--showNote');
+}
 
 /**
  * Show a specific element
@@ -138,7 +158,7 @@ formCreateNote.onsubmit = (event) => {
     toggleById('modal--newNote');
 
     // send note to main process to store it
-    ipcRenderer.send("CH_NOTE", note);
+    ipcRenderer.send("ADD_NOTE", note);
 }
 
 

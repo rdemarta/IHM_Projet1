@@ -30,6 +30,13 @@ class DataStore extends Store {
         return this.saveNotes()
     }
 
+    deleteNote(uuid) {
+        // Filter out the target note uuid
+        this.notes = this.notes.filter(note => note.uuid !== uuid);
+
+        return this.saveNotes();
+    }
+
 }
 
 module.exports = DataStore;

@@ -7,7 +7,7 @@ body {
     padding: 6px 20px 6px 20px;
     color: #555;
     background-color: #FFF;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 8px;
     font-weight: 900;
     display: inline-block;
@@ -68,7 +68,7 @@ body {
 .modal {
     margin: 100px auto 0px;
     width: 500px;
-    min-height: 100px;
+    min-height: 300px;
     background-color: #FFF;
     border-radius: 8px;
     position: relative;
@@ -252,6 +252,30 @@ body {
 }
 
 .item--note__content {
+}
+
+#btn__edit--note {
+    position: absolute;
+    top: 130px;
+    left: -110px;
+    font-size: 20px;
+}
+#btn__edit--note img {
+    width: 20px;
+    margin-right: 8px;
+    margin-bottom: -3px;
+}
+
+#btn__delete--note {
+    position: absolute;
+    top: 180px;
+    left: -110px;
+    font-size: 16px;
+}
+#btn__delete--note img {
+    width: 20px;
+    margin-right: 8px;
+    margin-bottom: -3px;
 }
 
 .item--task {

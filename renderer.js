@@ -38,6 +38,9 @@ function addNoteToBoard(board, note) {
     noteElem.appendChild(noteTitleElem);
     noteElem.appendChild(noteContentElem);
 
+    // Add dynamically a click listener to show the note modal
+    noteElem.addEventListener("click", (event) => showNote(note));
+
     board.append(noteElem);
 }
 
@@ -73,6 +76,21 @@ function addTaskToBoard(board, task) {
 
     board.append(taskElem);
 }
+
+function showNote(note) {
+    const showNoteModalID = "modal--showNote";
+    let showNoteModal = document.getElementById(showNoteModalID)
+    for(let child of showNoteModal.children[0].children){
+        if(child.className === 'modal__title modal__title--note'){
+            child.children[0].innerHTML = note.title;
+        }
+        if(child.className === 'modal__content'){
+            child.innerHTML = note.content;
+        }
+    }
+    toggleById(showNoteModalID);
+}
+
 
 /**
  * Show a specific element

@@ -220,6 +220,11 @@ body {
     border: 2px solid;
 }
 
+.item:hover {
+    background-color: rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
 .item__title {
     padding: 10px;
     text-align: center;

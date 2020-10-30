@@ -221,7 +221,7 @@ body {
 }
 
 .item:hover {
-    background-color: rgba(0,0,0,0.3);
+    border: 2px solid #ff8b00;
     cursor: pointer;
 }
 

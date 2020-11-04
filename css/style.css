@@ -210,6 +210,7 @@ body {
 }
 
 .item {
+    position: relative;
     margin: 20px 10px 0px 10px;
     width: 200px;
     min-width: 200px;
@@ -288,6 +289,24 @@ body {
 .item--task {
     background-color: #FFFFFF;
     border-color: #59C3FF;
+}
+
+.item--task .ring {
+    height: 100%;
+    background-color: #59C3FF;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+.item--task .ring h2 {
+    margin: 0px;
+    padding: 25px 0px 15px 0px;
+    color: #FFF;
+}
+
+.item--task .ring img {
+    width: 90px;
 }
 
 .item--task__title {

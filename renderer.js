@@ -24,6 +24,33 @@ ipcRenderer.on('received-items', (event, data) => { // IPC event listener
 
 });
 
+// When a task is due
+ipcRenderer.on('taskDue', (event, task) => {
+    for(let taskElement of document.getElementsByClassName('item--task')){
+        // taskDue is the current task
+        if(taskElement.dataset.uuid === task.uuid){
+            // Is not ringing => add to html the ring div
+            if(!taskElement.firstElementChild.classList.contains('ring')){
+                // First element is now the "Terminate" button, we hide it
+                taskElement.firstElementChild.style.display = 'none';
+
+                // We add as first element (prepend) the ring div
+                let taskRingElem = document.createElement("div");
+                taskRingElem.className = "ring";
+                let ringTitleElem = document.createElement("h2");
+                ringTitleElem.textContent = "Arrêter";
+                let ringImgElem = document.createElement("img");
+                ringImgElem.src = "images/bell.png";
+                taskRingElem.alt = "Ring";
+
+                taskRingElem.appendChild(ringTitleElem);
+                taskRingElem.appendChild(ringImgElem);
+                taskElement.prepend(taskRingElem);
+            }
+        }
+    }
+});
+
 /**
  * Add a note object into a HTML board
  * @param note The note object
@@ -90,7 +117,7 @@ function addTaskToBoard(task) {
     taskElem.appendChild(taskContentElem);
 
     // Click event listener to open task detail
-    taskElem.addEventListener("click", (event) => showTask(task));
+    taskElem.addEventListener("click", (event) => showTask(taskElem, task));
 
     (isToday(task.dueDate) ? todayBoard : tasksBoard).append(taskElem);
 }
@@ -128,39 +155,49 @@ function showNote(note) {
 /**
  * Fill the show note modal with the current clicked note and
  * display the modal
+ * @param taskHtmlElem The clicked html item--task element
  * @param task The clicked note object
  */
-function showTask(task) {
-    const showTaskModalID = "modal--showTask";
-    let showTaskModal = document.getElementById(showTaskModalID)
-    for(let child of showTaskModal.children[0].children){
-        // Fill the title
-        if(child.className === 'modal__title modal__title--task'){
-            child.children[0].innerHTML = task.title;
-            if(task.dueDate !== '') {
-                child.children[1].innerHTML = displayableDueDate(task.dueDate);
-                if(task.isRepeated) {
-                    child.children[1].innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
+function showTask(taskHtmlElem, task) {
+    // We want to show a ringing task => Remove the ring div to show the task that is ringing
+    if(taskHtmlElem.firstChild.classList.contains('ring')){
+        taskHtmlElem.firstChild.remove(); // FirstChild here is the ring div
+        taskHtmlElem.firstChild.style.display = 'block' // Now the firstChild is the "terminate" button that we want to show again
+        ipcRenderer.send("TERMINATE_RING_TASK", task.uuid);
+    }
+    // We want to show a non-ringing task
+    else {
+        const showTaskModalID = "modal--showTask";
+        let showTaskModal = document.getElementById(showTaskModalID)
+        for (let child of showTaskModal.children[0].children) {
+            // Fill the title
+            if (child.className === 'modal__title modal__title--task') {
+                child.children[0].innerHTML = task.title;
+                if(task.dueDate !== '') {
+                    child.children[1].innerHTML = displayableDueDate(task.dueDate);
+                    if(task.isRepeated) {
+                        child.children[1].innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
+                    }
+                } else {
+                    child.children[1].innerHTML = '';
                 }
-            } else {
-                child.children[1].innerHTML = '';
+            }
+
+            // Fill the content
+            if (child.className === 'modal__content') {
+                child.innerHTML = task.content;
+            }
+
+            // Add the data-uuid into delete btn html
+            // (useful to pass the uuid with the html onClick() function)
+            if (child.id === 'btn__delete--task' || child.id === 'btn__complete') {
+                child.dataset.uuid = task.uuid;
             }
         }
 
-        // Fill the content
-        if(child.className === 'modal__content'){
-            child.innerHTML = task.content;
-        }
-
-        // Add the data-uuid into delete btn html
-        // (useful to pass the uuid with the html onClick() function)
-        if(child.id === 'btn__delete--task' ||child.id === 'btn__complete'){
-            child.dataset.uuid = task.uuid;
-        }
+        // Display the modal
+        toggleById(showTaskModalID);
     }
-
-    // Display the modal
-    toggleById(showTaskModalID);
 }
 
 /**

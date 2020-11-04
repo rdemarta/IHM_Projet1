@@ -12,6 +12,8 @@ const data = {
   notes: notesData.getNotes()['notes'],
   tasks: tasksData.getTasks()['tasks']
 };
+const intervalCheckTaskDueDate = 30000;
+let tasksNotified = new Set();
 
 /**
  * Create the main window
@@ -33,13 +35,15 @@ function createWindow () {
   mainWindow.webContents.openDevTools()
 
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('received-items', data)
+    mainWindow.webContents.send('received-items', data);
   })
 
   // Create and manage tray
   //createTray(mainWindow);
   testNotification(mainWindow);
-
+  setInterval(function(){
+      checkTaskDue(mainWindow);
+  }, intervalCheckTaskDueDate);
 }
 
 app.whenReady().then(createWindow)
@@ -130,6 +134,19 @@ ipc.on("COMPLETE_TASK", (event, uuid) => {
 });
 
 /**
+ * IPC received when user clicked on a task that is ringing (due for now)
+ */
+ipc.on("TERMINATE_RING_TASK", (event, uuid) => {
+    // Remove from the tasksNotified, to be able to be notified again if the user don't want to complete the task
+    tasksNotified.delete(uuid);
+    // Remove 1 badge count
+    if(app.getBadgeCount() > 0){
+        app.setBadgeCount(app.getBadgeCount() - 1);
+    }
+});
+
+
+/**
  * Create and manage tray
  *
  * It will create a tray in processbar of the OS, and when we close the window
@@ -172,22 +189,42 @@ function createTray(mainWindow){
 
 function testNotification(mainWindow) {
   setTimeout(function() {
-    const notification = new Notification({
-      title: "Tâche à effectuer",
-      body: "Promener le chien",
-      icon: iconPath,
-      timeoutType: "never",
-    })
 
-    notification.on('click', (event, arg)=>{
-      mainWindow.show();
-    })
-
-    notification.on('show', (event, arg)=>{
-      app.setBadgeCount(2);
-      console.log(app.getBadgeCount());
-    })
-
-    notification.show();
   }, 2000);
+}
+
+function checkTaskDue(mainWindow) {
+    const tasks = tasksData.getTasks()['tasks'];
+    for(const task of tasks) {
+        if(Date.now() >= new Date(task.dueDate).getTime()){
+            mainWindow.webContents.send('taskDue', task)
+
+            if(!tasksNotified.has(task.uuid)) {
+                tasksNotified.add(task.uuid)
+                app.setBadgeCount(app.getBadgeCount() + 1);
+
+                // Display notifications only if the windows is not focused AND we not already send it
+                if (!mainWindow.isFocused()) {
+
+                    const notification = new Notification({
+                        title: "Une tâche est arrivée à échéance",
+                        body: task.content,
+                        icon: iconPath,
+                        timeoutType: "never",
+                    })
+
+                    notification.on('click', (event, arg) => {
+                        mainWindow.show();
+                    })
+
+                    /*notification.on('show', (event, arg)=>{
+                        app.setBadgeCount(2);
+                        console.log(app.getBadgeCount());
+                    })*/
+
+                    notification.show();
+                }
+            }
+        }
+    }
 }

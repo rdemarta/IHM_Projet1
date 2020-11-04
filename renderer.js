@@ -158,11 +158,33 @@ function showTask(task) {
     toggleById(showTaskModalID);
 }
 
+/**
+ * Transforms a given date string into a pretty european format, with bold tags and labels.
+ * @param date
+ * @returns {string}
+ */
 function displayableDueDate(date) {
     let d = new Date(date);
     return'Pour le <b>'
         + d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear() + '</b>'
         + ' à <b>' + d.getHours() + ':' + d.getMinutes() + '</b>';
+}
+
+/**
+ * Empties form fields and hide specific sections (date and repeat).
+ */
+function resetCreateTaskForm() {
+    resetFormById('formCreateTask');
+    toggleById('repeatDiv', undefined,false);
+    toggleById('dueDateDiv', undefined,false);
+}
+
+/**
+ * Resets the field to its initial state.
+ * @param id
+ */
+function resetFormById(id) {
+    document.getElementById(id).reset();
 }
 
 /**
@@ -225,15 +247,19 @@ function completeTask(uuid) {
 }
 
 /**
- * Show a specific element
+ * Toggles a specific element
  * @param id
  * @param displayStyle
+ * @param force specifies if the element should be shown (true) or hidden (false). If not specified, toggles automatically.
  */
-function toggleById(id, displayStyle = 'block'){
+function toggleById(id, displayStyle = 'block', force = null){
     let element = document.getElementById(id);
-    if(window.getComputedStyle(element).display === 'none') { // Show element
+
+    if(force === true || (force === null && window.getComputedStyle(element).display === 'none')) {
+        // Show element
         element.style.display = displayStyle;
-    } else { // Hide element
+    } else {
+        // Hide element
         element.style.display = 'none';
     }
 }
@@ -290,6 +316,7 @@ formCreateTask.onsubmit = (event) => {
 
     // send task to main process to store it
     ipcRenderer.send("ADD_TASK", task);
+    resetCreateTaskForm();
 }
 
 

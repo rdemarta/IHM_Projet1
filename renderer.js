@@ -3,27 +3,32 @@ const UUID = require('uuid-v4');
 const mainBoard = document.getElementById('main-board');
 const notesBoard = document.getElementById('notes-board');
 const tasksBoard = document.getElementById('tasks-board');
+const todayBoard = document.getElementById('today-board');
 
 // When we received some notes -> Create the notes and tasks DOM and display it
 ipcRenderer.on('received-items', (event, data) => { // IPC event listener
     // Display notes
     for (let note of data.notes) {
-        addNoteToBoard(notesBoard, note);
+        addNoteToBoard(note);
     }
 
     // Display tasks
     for (let task of data.tasks) {
-        addTaskToBoard(tasksBoard, task);
+        addTaskToBoard(task);
     }
+
+    // Prepare date input
+    let d = new Date();
+    document.getElementById('datePicker').defaultValue =
+        d.getFullYear() + '-' + asDateDigit(d.getMonth()) + '-' + asDateDigit(d.getDate()) + 'T' + asDateDigit(d.getHours()) + ':' + asDateDigit(d.getMinutes());
 
 });
 
 /**
  * Add a note object into a HTML board
- * @param board The HTML board element
  * @param note The note object
  */
-function addNoteToBoard(board, note) {
+function addNoteToBoard(note) {
     let noteElem = document.createElement("div");
     noteElem.className = "item item--note";
     noteElem.dataset.uuid = note.uuid;
@@ -42,15 +47,14 @@ function addNoteToBoard(board, note) {
     // Add dynamically a click listener to show the note modal
     noteElem.addEventListener("click", (event) => showNote(note));
 
-    board.append(noteElem);
+    notesBoard.append(noteElem);
 }
 
 /**
  * Add a task object into a HTML board
- * @param board The HTML board element
  * @param task The task object
  */
-function addTaskToBoard(board, task) {
+function addTaskToBoard(task) {
     let taskElem = document.createElement("div");
     taskElem.className = "item item--task";
     taskElem.dataset.uuid = task.uuid;
@@ -85,7 +89,7 @@ function addTaskToBoard(board, task) {
     // Click event listener to open task detail
     taskElem.addEventListener("click", (event) => showTask(task));
 
-    board.append(taskElem);
+    (isToday(task.dueDate) ? todayBoard : tasksBoard).append(taskElem);
 }
 
 /**
@@ -159,6 +163,21 @@ function showTask(task) {
 }
 
 /**
+ * Returns true if the given date  is today.
+ * @param date
+ * @returns {boolean}
+ */
+function isToday(date) {
+    let d = new Date(date);
+    let now = new Date();
+    return d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+}
+
+function asDateDigit(value) {
+    return (value < 10 ? '0' : '') + value;
+}
+
+/**
  * Transforms a given date string into a pretty european format, with bold tags and labels.
  * @param date
  * @returns {string}
@@ -167,7 +186,7 @@ function displayableDueDate(date) {
     let d = new Date(date);
     return'Pour le <b>'
         + d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear() + '</b>'
-        + ' à <b>' + d.getHours() + ':' + d.getMinutes() + '</b>';
+        + ' à <b>' + asDateDigit(d.getHours()) + ':' + asDateDigit(d.getMinutes()) + '</b>';
 }
 
 /**
@@ -306,9 +325,9 @@ formCreateTask.onsubmit = (event) => {
     // Generate new task
     let task = fetchFormDataAsObject(formCreateTask)
     task.uuid = UUID();
-
+    console.log(task);
     // Add the task to the board
-    addTaskToBoard(tasksBoard, task);
+    addTaskToBoard(task);
 
     // Reset the form and close the modal
     formCreateTask.reset();

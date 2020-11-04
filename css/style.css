@@ -202,8 +202,6 @@ body {
 
 #main-board {
     padding: 10px;
-    /*display: flex;*/
-    /*flex-wrap: wrap;*/
 }
 
 #notes-board, #tasks-board {

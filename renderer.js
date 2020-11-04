@@ -74,7 +74,7 @@ function addTaskToBoard(board, task) {
     if(task.dueDate !== '') {
         let taskSubtitleElem = document.createElement("div");
         taskSubtitleElem.className = "item__title item--task__subtitle";
-        taskSubtitleElem.textContent = 'Pour le ' + task.dueDate;
+        taskSubtitleElem.innerHTML = displayableDueDate(task.dueDate);
         taskElem.appendChild(taskSubtitleElem);
     }
     // TODO "repeat every" attributes
@@ -131,7 +131,7 @@ function showTask(task) {
         if(child.className === 'modal__title modal__title--task'){
             child.children[0].innerHTML = task.title;
             if(task.dueDate !== '') {
-                child.children[1].innerHTML = 'Pour le ' + task.dueDate;
+                child.children[1].innerHTML = displayableDueDate(task.dueDate);
             } else {
                 child.children[1].innerHTML = '';
             }
@@ -156,6 +156,13 @@ function showTask(task) {
 
     // Display the modal
     toggleById(showTaskModalID);
+}
+
+function displayableDueDate(date) {
+    let d = new Date(date);
+    return'Pour le <b>'
+        + d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear() + '</b>'
+        + ' à <b>' + d.getHours() + ':' + d.getMinutes() + '</b>';
 }
 
 /**

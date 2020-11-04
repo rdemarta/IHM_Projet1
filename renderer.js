@@ -40,6 +40,7 @@ ipcRenderer.on('taskDue', (event, task) => {
                 let ringTitleElem = document.createElement("h2");
                 ringTitleElem.textContent = "Arrêter";
                 let ringImgElem = document.createElement("img");
+                ringImgElem.className = "bell";
                 ringImgElem.src = "images/bell.png";
                 taskRingElem.alt = "Ring";
 

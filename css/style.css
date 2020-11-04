@@ -327,3 +327,23 @@ body {
 .hidden {
     display: none;
 }
+
+@keyframes bounce {
+    0% {transform: rotate(0deg);}
+    10% {transform: rotate(20deg);}
+    20% {transform: rotate(-20deg);}
+    30% {transform: rotate(20deg);}
+    40% {transform: rotate(-20deg);}
+    50% {transform: rotate(20deg);}
+    60% {transform: rotate(-20deg);}
+    70% {transform: rotate(20deg);}
+    80% {transform: rotate(-20deg);}
+    90% {transform: rotate(0deg);}
+}
+
+.bell {
+    animation-name: bounce;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+    animation-iteration-count: infinite;
+}

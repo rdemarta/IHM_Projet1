@@ -20,7 +20,7 @@ ipcRenderer.on('received-items', (event, data) => { // IPC event listener
     // Prepare date input
     let d = new Date();
     document.getElementById('datePicker').defaultValue =
-        d.getFullYear() + '-' + asDateDigit(d.getMonth()) + '-' + asDateDigit(d.getDate()) + 'T' + asDateDigit(d.getHours()) + ':' + asDateDigit(d.getMinutes());
+        d.getFullYear() + '-' + asDateDigit(d.getMonth()+1) + '-' + asDateDigit(d.getDate()) + 'T' + asDateDigit(d.getHours()) + ':' + asDateDigit(d.getMinutes());
 
 });
 
@@ -79,12 +79,15 @@ function addTaskToBoard(task) {
         let taskSubtitleElem = document.createElement("div");
         taskSubtitleElem.className = "item__title item--task__subtitle";
         taskSubtitleElem.innerHTML = displayableDueDate(task.dueDate);
+
+        if(task.isRepeated) {
+            taskSubtitleElem.innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
+        }
+
         taskElem.appendChild(taskSubtitleElem);
     }
-    // TODO "repeat every" attributes
 
     taskElem.appendChild(taskContentElem);
-
 
     // Click event listener to open task detail
     taskElem.addEventListener("click", (event) => showTask(task));
@@ -136,11 +139,9 @@ function showTask(task) {
             child.children[0].innerHTML = task.title;
             if(task.dueDate !== '') {
                 child.children[1].innerHTML = displayableDueDate(task.dueDate);
-            } else {
-                child.children[1].innerHTML = '';
-            }
-            if(task.toggleRepeat != null) {
-                child.children[1].innerHTML = 'A faire chaque ' + task.repeatValue + ' ' + task.repeatUnit;
+                if(task.isRepeated) {
+                    child.children[1].innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
+                }
             } else {
                 child.children[1].innerHTML = '';
             }
@@ -185,8 +186,12 @@ function asDateDigit(value) {
 function displayableDueDate(date) {
     let d = new Date(date);
     return'Pour le <b>'
-        + d.getDate() + '.' + d.getMonth() + '.' + d.getFullYear() + '</b>'
+        + asDateDigit(d.getDate()) + '.' + (asDateDigit(d.getMonth()+1)) + '.' + d.getFullYear() + '</b>'
         + ' à <b>' + asDateDigit(d.getHours()) + ':' + asDateDigit(d.getMinutes()) + '</b>';
+}
+
+function displayRepeat(repeatValue, repeatUnit) {
+    return 'A faire chaque <b>' + repeatValue + ' ' + repeatUnit + '</b>';
 }
 
 /**
@@ -325,7 +330,8 @@ formCreateTask.onsubmit = (event) => {
     // Generate new task
     let task = fetchFormDataAsObject(formCreateTask)
     task.uuid = UUID();
-    console.log(task);
+    task.isRepeated = task.toggleDueDate != null && task.toggleRepeat != null && task.dueDate != null;
+
     // Add the task to the board
     addTaskToBoard(task);
 

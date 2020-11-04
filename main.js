@@ -95,7 +95,7 @@ ipc.on("COMPLETE_TASK", (event, uuid) => {
   let task = tasksData.getTask(uuid);
 
   // Check if the task should repeat
-  if(task.toggleDueDate != null && task.toggleRepeat != null && task.dueDate != null) {
+  if(task.isRepeated) {
     // Create new task
     let newDate = new Date(task.dueDate);
     let valueToAdd = parseInt(task.repeatValue);

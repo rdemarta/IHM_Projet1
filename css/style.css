@@ -297,9 +297,9 @@ body {
 
 .item--task__subtitle {
     padding: 0;
-    color: #7b7b7b;
+    color: #535353;
     font-weight: normal;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .item--task__content {

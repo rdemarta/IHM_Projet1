@@ -134,18 +134,20 @@
             <div class="modal modal--note">
 
                 <div class="btn modal__btn--close" onclick="toggleById('modal--showNote')">
-                    <img src="images/close.png" alt="Close">
+                    <img src="images/close.png" alt="Close" onclick="">
                 </div>
 
                 <button id="btn__edit--note" class="btn btn--note"><img src="images/edit.png" alt="Modifier">Modifier</button>
                 <button id="btn__delete--note" class="btn btn--note" data-uuid="" onclick="deleteNoteByUUID(this.dataset.uuid)"><img src="images/trash.png" alt="Supprimer">Supprimer</button>
 
                 <div class="modal__title modal__title--note">
-                    <h1>Title</h1>
+                    <input id="input__editTitle--note" type="text" value="" placeholder="Titre" disabled required>
                 </div>
 
                 <div class="modal__content">
-                    Content
+                    <textarea id="input__editContent--note" rows="8" placeholder="Description" disabled required></textarea>
+
+                    <button id="btnEditNoteSave" class="btn btn--note btn--submit">Valider</button>
                 </div>
 
             </div>

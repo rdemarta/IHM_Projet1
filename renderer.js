@@ -95,24 +95,55 @@ function addTaskToBoard(board, task) {
  */
 function showNote(note) {
     const showNoteModalID = "modal--showNote";
+    let inputTitle = document.getElementById("input__editTitle--note");
+    let textAreaDescription = document.getElementById("input__editContent--note");
+    let saveButton = document.getElementById("btnEditNoteSave");
+    inputTitle.value = note.title
+    textAreaDescription.value = note.content
+
     let showNoteModal = document.getElementById(showNoteModalID)
     for(let child of showNoteModal.children[0].children){
         // Fill the title
-        if(child.className === 'modal__title modal__title--note'){
-            child.children[0].innerHTML = note.title;
+        /*if(child.className === 'modal__title modal__title--note'){
+            let input = document.createElement("input");
+            input.type = "text";
+            input.className = "test"; // set the CSS class
+            input.value = note.title
+            child.appendChild(input);
+            //child.children[0].innerHTML = note.title;
         }
 
         // Fill the content
         if(child.className === 'modal__content'){
             child.innerHTML = note.content;
-        }
+        }*/
 
         // Add the data-uuid into delete btn html
         // (useful to pass the uuid with the html onClick() function)
         if(child.id === 'btn__delete--note'){
             child.dataset.uuid = note.uuid;
         }
+        if(child.id === 'btn__edit--note'){
+            child.addEventListener('click', (event) => {
+                if(child.classList.contains('editMode')){
+                    child.classList.remove('editMode')
+                    inputTitle.disabled = true;
+                    textAreaDescription.disabled = true;
+                    textAreaDescription.style.resize = 'none';
+                    saveButton.style.display = 'none';
+                }else{
+                    child.classList.add('editMode')
+                    inputTitle.disabled = false;
+                    textAreaDescription.disabled = false;
+                    textAreaDescription.style.resize = 'vertical';
+                    saveButton.style.display = 'block';
+                }
+
+            })
+        }
     }
+
+
 
     // Display the modal
     toggleById(showNoteModalID);
@@ -317,6 +348,13 @@ formCreateTask.onsubmit = (event) => {
     // send task to main process to store it
     ipcRenderer.send("ADD_TASK", task);
     resetCreateTaskForm();
+}
+
+/**
+ * Empties form fields and hide specific sections (date and repeat).
+ */
+function resetEditNodeForm() {
+
 }
 
 

@@ -99,13 +99,11 @@ function addTaskToBoard(task) {
     let taskButton = document.createElement("div");
     taskButton.className = "btn btn--task btn--task-item";
     taskButton.innerHTML = 'Terminer';
+    taskButton.addEventListener('click', (event) => {
+        completeTask(task.uuid);
+    });
 
     taskElem.appendChild(taskButton);
-    /*taskButton.addEventListener('onclick', (event) => {
-        console.log('fuck you');
-        toggleById('modal--showTask', undefined, false);
-        completeTask(task.uuid);
-    });*/
     taskElem.appendChild(taskTitleElem);
 
     if(task.dueDate !== '') {
@@ -131,8 +129,8 @@ function addTaskToBoard(task) {
             taskElem.firstChild.style.display = 'block' // Now the firstChild is the "terminate" button that we want to show again
             ipcRenderer.send("TERMINATE_RING_TASK", task.uuid);
         }
-        // We want to show a non-ringing task
-        else {
+        // Avoid showing task when clicking task's button
+        else if(event.target !== taskButton) {
             showTask(task);
         }
     });
@@ -312,7 +310,8 @@ function completeTask(uuid) {
     }
 
     // Close modal window
-    toggleById('modal--showTask');
+    // Force hide to avoid showing modal if the task item button has been clicked
+    toggleById('modal--showTask', undefined, false);
 }
 
 /**

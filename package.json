@@ -1,6 +1,6 @@
 {
   "name": "tablonette",
-  "description": "IHM_Projet1",
+  "description": "Tablonette est une application de gestion de tâches et de notes",
   "desktopName": "tablonette.desktop",
   "version": "1.0.0",
   "author": "Robin Demarta <robin.demarta@heig-vd.ch>",
@@ -29,11 +29,18 @@
   },
   "build": {
     "appId": "tablonette",
-    "productName": "tablonette",
+    "productName": "Tablonette",
     "linux": {
       "icon": "./icon.icns",
       "target": [
         "deb"
+      ]
+    },
+    "win": {
+      "icon": "./icon.png",
+      "target": [
+        "msi",
+        "portable"
       ]
     }
   }

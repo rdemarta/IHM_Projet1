@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, Notification, globalShortcut} = require('electron')
+const { app, BrowserWindow, Menu, Notification, globalShortcut} = require('electron')
 const ipc = require('electron').ipcMain
 const UUID = require('uuid-v4');
 const DataStoreNotes = require("./DataStoreNotes");
@@ -41,9 +41,6 @@ function createWindow () {
     // Run the async task that check each interval times all due task
     checkTaskDueInfiniteProcess(mainWindow);
   })
-
-  // Create and manage tray
-  //createTray(mainWindow);
 }
 
 app.whenReady().then(() => {
@@ -152,47 +149,6 @@ ipc.on("TERMINATE_RING_TASK", (event, uuid) => {
     }
 });
 
-
-/**
- * Create and manage tray
- *
- * It will create a tray in processbar of the OS, and when we close the window
- * it will still work in background and can be accessible on the tray to show it again or close it.
- * @param mainWindow
- */
-function createTray(mainWindow){
-  let tray = new Tray(iconPath)
-
-  let contextMenu = Menu.buildFromTemplate([
-    { label: 'Ouvrir', click:  function(){
-      mainWindow.show();
-    } },
-    { label: 'Quitter', click:  function(){
-        app.isQuiting = true;
-        app.quit();
-    } }
-  ]);
-
-  tray.setToolTip('Tablonette')
-  tray.setContextMenu(contextMenu)
-
-  /*
-  mainWindow.on('minimize',function(event){
-    event.preventDefault();
-    mainWindow.hide();
-  });*/
-
-  // When we close the window, just hide it and to show it again or really quit it, use the tray
-  mainWindow.on('close', function (event) {
-      if(!app.isQuiting){
-          event.preventDefault();
-          mainWindow.hide();
-      }
-
-      return false;
-  });
-
-}
 
 /**
  * Each interval in ms, we'll check if a task is due

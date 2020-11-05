@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, Notification} = require('electron')
+const { app, BrowserWindow, Tray, Menu, Notification, globalShortcut} = require('electron')
 const ipc = require('electron').ipcMain
 const UUID = require('uuid-v4');
 const DataStoreNotes = require("./DataStoreNotes");
@@ -46,7 +46,12 @@ function createWindow () {
   //createTray(mainWindow);
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+    // Unregister some refresh shortcut (register nothing to disable)
+    globalShortcut.register('F5', () => {});
+    globalShortcut.register('CommandOrControl+R', () => {});
+    globalShortcut.register('CommandOrControl+Shift+R', () => {});
+}).then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

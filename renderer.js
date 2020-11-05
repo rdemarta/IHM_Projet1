@@ -348,10 +348,12 @@ formCreateNote.onsubmit = (event) => {
 
     // Generate new note
     let note = fetchFormDataAsObject(formCreateNote)
+    console.log("note");
+    console.log(note);
     note.uuid = UUID();
 
     // Add the note to the board
-    addNoteToBoard(notesBoard, note);
+    addNoteToBoard(note);
 
     // Reset the form and close the modal
     formCreateNote.reset();

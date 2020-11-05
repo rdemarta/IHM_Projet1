@@ -194,17 +194,19 @@ body {
 }
 
 #today-board .today-board__title {
+    flex: 0 1 100%; /* Display on one line alone */
     font-size: 24px;
     color: #7A9AAC;
     font-weight: bold;
+    margin-top: 0;
 }
 
 
-#main-board {
-    padding: 10px;
+#main-board, #today-board {
+    padding: 40px;
 }
 
-#notes-board, #tasks-board {
+#today-board, #notes-board, #tasks-board {
     display: flex;
     flex-wrap: wrap;
 }

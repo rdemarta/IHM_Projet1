@@ -101,6 +101,11 @@ function addTaskToBoard(task) {
     taskButton.innerHTML = 'Terminer';
 
     taskElem.appendChild(taskButton);
+    /*taskButton.addEventListener('onclick', (event) => {
+        console.log('fuck you');
+        toggleById('modal--showTask', undefined, false);
+        completeTask(task.uuid);
+    });*/
     taskElem.appendChild(taskTitleElem);
 
     if(task.dueDate !== '') {
@@ -118,7 +123,19 @@ function addTaskToBoard(task) {
     taskElem.appendChild(taskContentElem);
 
     // Click event listener to open task detail
-    taskElem.addEventListener("click", (event) => showTask(taskElem, task));
+    taskElem.addEventListener("click", (event) => {
+
+        // We want to show a ringing task => Remove the ring div to show the task that is ringing
+        if(taskElem.firstChild.classList.contains('ring')){
+            taskElem.firstChild.remove(); // FirstChild here is the ring div
+            taskElem.firstChild.style.display = 'block' // Now the firstChild is the "terminate" button that we want to show again
+            ipcRenderer.send("TERMINATE_RING_TASK", task.uuid);
+        }
+        // We want to show a non-ringing task
+        else {
+            showTask(task);
+        }
+    });
 
     (isToday(task.dueDate) ? todayBoard : tasksBoard).append(taskElem);
 }
@@ -154,51 +171,41 @@ function showNote(note) {
 }
 
 /**
- * Fill the show note modal with the current clicked note and
+ * Fill the show task modal with the current clicked task and
  * display the modal
- * @param taskHtmlElem The clicked html item--task element
- * @param task The clicked note object
+ * @param task The clicked task object
  */
-function showTask(taskHtmlElem, task) {
-    // We want to show a ringing task => Remove the ring div to show the task that is ringing
-    if(taskHtmlElem.firstChild.classList.contains('ring')){
-        taskHtmlElem.firstChild.remove(); // FirstChild here is the ring div
-        taskHtmlElem.firstChild.style.display = 'block' // Now the firstChild is the "terminate" button that we want to show again
-        ipcRenderer.send("TERMINATE_RING_TASK", task.uuid);
-    }
-    // We want to show a non-ringing task
-    else {
-        const showTaskModalID = "modal--showTask";
-        let showTaskModal = document.getElementById(showTaskModalID)
-        for (let child of showTaskModal.children[0].children) {
-            // Fill the title
-            if (child.className === 'modal__title modal__title--task') {
-                child.children[0].innerHTML = task.title;
-                if(task.dueDate !== '') {
-                    child.children[1].innerHTML = displayableDueDate(task.dueDate);
-                    if(task.isRepeated) {
-                        child.children[1].innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
-                    }
-                } else {
-                    child.children[1].innerHTML = '';
+function showTask(task) {
+    const showTaskModalID = "modal--showTask";
+    let showTaskModal = document.getElementById(showTaskModalID)
+    for (let child of showTaskModal.children[0].children) {
+        // Fill the title
+        if (child.className === 'modal__title modal__title--task') {
+            child.children[0].innerHTML = task.title;
+            if(task.dueDate !== '') {
+                child.children[1].innerHTML = displayableDueDate(task.dueDate);
+                if(task.isRepeated) {
+                    child.children[1].innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
                 }
-            }
-
-            // Fill the content
-            if (child.className === 'modal__content') {
-                child.innerHTML = task.content;
-            }
-
-            // Add the data-uuid into delete btn html
-            // (useful to pass the uuid with the html onClick() function)
-            if (child.id === 'btn__delete--task' || child.id === 'btn__complete') {
-                child.dataset.uuid = task.uuid;
+            } else {
+                child.children[1].innerHTML = '';
             }
         }
 
-        // Display the modal
-        toggleById(showTaskModalID);
+        // Fill the content
+        if (child.className === 'modal__content') {
+            child.innerHTML = task.content;
+        }
+
+        // Add the data-uuid into delete btn html
+        // (useful to pass the uuid with the html onClick() function)
+        if (child.id === 'btn__delete--task' || child.id === 'btn__complete') {
+            child.dataset.uuid = task.uuid;
+        }
     }
+
+    // Display the modal
+    toggleById(showTaskModalID);
 }
 
 /**
@@ -370,7 +377,8 @@ formCreateTask.onsubmit = (event) => {
     // Generate new task
     let task = fetchFormDataAsObject(formCreateTask)
     task.uuid = UUID();
-    task.isRepeated = task.toggleDueDate != null && task.toggleRepeat != null && task.dueDate != null;
+    task.dueDate = task.toggleDueDate != null && task.dueDate !== '' ? task.dueDate : '';
+    task.isRepeated = task.dueDate !== '' && task.toggleRepeat != null && task.dueDate != null;
 
     // Add the task to the board
     addTaskToBoard(task);

@@ -220,7 +220,7 @@ function checkTaskDue(mainWindow) {
             mainWindow.webContents.send('taskDue', task)
 
             if(!tasksNotified.has(task.uuid)) {
-                // Add the task uuid to the SET contains all notified tasks and set the Badge
+                // Add the task uuid to the SET contains all notified tasks and set the Badge (badges only visible in production app)
                 tasksNotified.add(task.uuid)
                 app.setBadgeCount(app.getBadgeCount() + 1);
 
@@ -229,7 +229,7 @@ function checkTaskDue(mainWindow) {
 
                     const notification = new Notification({
                         title: "Une tâche est arrivée à échéance",
-                        body: task.content,
+                        body: task.title,
                         icon: iconPath,
                         timeoutType: "never",
                     })
@@ -237,11 +237,6 @@ function checkTaskDue(mainWindow) {
                     notification.on('click', (event, arg) => {
                         mainWindow.show();
                     })
-
-                    /*notification.on('show', (event, arg)=>{
-                        app.setBadgeCount(2);
-                        console.log(app.getBadgeCount());
-                    })*/
 
                     notification.show();
                 }

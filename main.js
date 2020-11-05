@@ -34,16 +34,16 @@ function createWindow () {
   mainWindow.loadFile('index.html')
   mainWindow.webContents.openDevTools()
 
+  // All content loads
   mainWindow.webContents.on('did-finish-load', () => {
+    // Send all data (tasks and notes) to renderer process
     mainWindow.webContents.send('received-items', data);
+    // Run the async task that check each interval times all due task
+    checkTaskDueInfiniteProcess(mainWindow);
   })
 
   // Create and manage tray
   //createTray(mainWindow);
-  testNotification(mainWindow);
-  setInterval(function(){
-      checkTaskDue(mainWindow);
-  }, intervalCheckTaskDueDate);
 }
 
 app.whenReady().then(createWindow)
@@ -95,7 +95,9 @@ ipc.on("DELETE_TASK", (event, uuid) => {
 /**
  * IPC to complete a task (and create the next one)
  */
-ipc.on("COMPLETE_TASK", (event, uuid) => {
+ipc.on("COMPLETE_TASK", (event, uuid) =>
+
+{
   let task = tasksData.getTask(uuid);
 
   // Check if the task should repeat
@@ -187,19 +189,33 @@ function createTray(mainWindow){
 
 }
 
-function testNotification(mainWindow) {
-  setTimeout(function() {
-
-  }, 2000);
+/**
+ * Each interval in ms, we'll check if a task is due
+ * @param mainWindow The main window of the app
+ */
+function checkTaskDueInfiniteProcess(mainWindow) {
+    // First time, call it directly to await waiting
+    checkTaskDue(mainWindow);
+    setInterval(function(){
+        checkTaskDue(mainWindow);
+    }, intervalCheckTaskDueDate);
 }
 
+/**
+ * Check if a task is due. If yes => send to the renderer process that the task is due
+ * and add badgeCount and window notification (if main window not focused) only if we not already sent one notif and
+ * that the user has not acknowledged
+ * @param mainWindow The main window of the app
+ */
 function checkTaskDue(mainWindow) {
     const tasks = tasksData.getTasks()['tasks'];
     for(const task of tasks) {
         if(Date.now() >= new Date(task.dueDate).getTime()){
+            // Send to the renderer process the due task
             mainWindow.webContents.send('taskDue', task)
 
             if(!tasksNotified.has(task.uuid)) {
+                // Add the task uuid to the SET contains all notified tasks and set the Badge
                 tasksNotified.add(task.uuid)
                 app.setBadgeCount(app.getBadgeCount() + 1);
 

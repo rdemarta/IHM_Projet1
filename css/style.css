@@ -219,6 +219,15 @@ body {
     height: 200px;
     border-radius: 8px;
     border: 2px solid;
+    animation-name: pop;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+
+}
+
+@keyframes pop {
+    0% {transform: scale(0);}
+    100% {transform: scale(1);}
 }
 
 .item:hover {

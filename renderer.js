@@ -260,20 +260,23 @@ function resetFormById(id) {
  * @param uuid The note uuid we want to delete
  */
 function deleteNoteByUUID(uuid) {
-    // send uuid to main process to delete it
-    ipcRenderer.send("DELETE_NOTE", uuid);
+    const choice = confirm("Voulez-vous vraiment supprimer cette note ?");
+    if (choice === true) {
+        // send uuid to main process to delete it
+        ipcRenderer.send("DELETE_NOTE", uuid);
 
-    // remove the note from HTML
-    // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
-    for(const itemNote of document.getElementsByClassName('item--note')){
-        if(itemNote.dataset.uuid === uuid){
-            itemNote.remove();
-            break;
+        // remove the note from HTML
+        // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
+        for (const itemNote of document.getElementsByClassName('item--note')) {
+            if (itemNote.dataset.uuid === uuid) {
+                itemNote.remove();
+                break;
+            }
         }
-    }
 
-    // Hide the showNote modal (from where we can delete the note)
-    toggleById('modal--showNote');
+        // Hide the showNote modal (from where we can delete the note)
+        toggleById('modal--showNote');
+    }
 }
 
 /**
@@ -282,20 +285,23 @@ function deleteNoteByUUID(uuid) {
  * @param uuid The note uuid we want to delete
  */
 function deleteTaskByUUID(uuid) {
-    // send uuid to main process to delete it
-    ipcRenderer.send("DELETE_TASK", uuid);
+    const choice = confirm("Voulez-vous vraiment supprimer cette note ?");
+    if (choice === true) {
+        // send uuid to main process to delete it
+        ipcRenderer.send("DELETE_TASK", uuid);
 
-    // remove the note from HTML
-    // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
-    for(const itemTask of document.getElementsByClassName('item--task')){
-        if(itemTask.dataset.uuid === uuid){
-            itemTask.remove();
-            break;
+        // remove the note from HTML
+        // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
+        for (const itemTask of document.getElementsByClassName('item--task')) {
+            if (itemTask.dataset.uuid === uuid) {
+                itemTask.remove();
+                break;
+            }
         }
-    }
 
-    // Hide the showNote modal (from where we can delete the task)
-    toggleById('modal--showTask');
+        // Hide the showNote modal (from where we can delete the task)
+        toggleById('modal--showTask');
+    }
 }
 
 function completeTask(uuid) {

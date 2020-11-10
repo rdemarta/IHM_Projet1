@@ -20,8 +20,8 @@ let tasksNotified = new Set();
  */
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 900,
+    width: 1280,
+    height: 720,
     center: true,
     icon: iconPath,
     webPreferences: {
@@ -31,7 +31,9 @@ function createWindow () {
     }
   })
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('index.html');
+  mainWindow.setMenu(null);
+  mainWindow.maximize();
 
   // All content loads
   mainWindow.webContents.on('did-finish-load', () => {

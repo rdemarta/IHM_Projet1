@@ -333,24 +333,27 @@ function deleteTaskByUUID(uuid) {
 }
 
 function completeTask(uuid) {
-    ipcRenderer.send("COMPLETE_TASK", uuid);
+    const choice = confirm("Voulez-vous vraiment terminer cette tâche ?");
+    if (choice === true) {
+        ipcRenderer.send("COMPLETE_TASK", uuid);
 
-    // Hide completed task
-    for(const task of document.getElementsByClassName('item--task')){
-        if(task.dataset.uuid === uuid){
-            // Update today's tasks counter
-            if (task.dataset.today != null) {
-                updateTodayTaskCounter(-1);
+        // Hide completed task
+        for (const task of document.getElementsByClassName('item--task')) {
+            if (task.dataset.uuid === uuid) {
+                // Update today's tasks counter
+                if (task.dataset.today != null) {
+                    updateTodayTaskCounter(-1);
+                }
+
+                task.remove();
+                break;
             }
-
-            task.remove();
-            break;
         }
-    }
 
-    // Close modal window
-    // Force hide to avoid showing modal if the task item button has been clicked
-    toggleById('modal--showTask', undefined, false);
+        // Close modal window
+        // Force hide to avoid showing modal if the task item button has been clicked
+        toggleById('modal--showTask', undefined, false);
+    }
 }
 
 /**

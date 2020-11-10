@@ -4,6 +4,8 @@ const mainBoard = document.getElementById('main-board');
 const notesBoard = document.getElementById('notes-board');
 const tasksBoard = document.getElementById('tasks-board');
 const todayBoard = document.getElementById('today-board');
+const todayTasksCounterElement = document.getElementById('todayTasksCounter');
+let todayTasksCounter = 0;
 
 // When we received some notes -> Create the notes and tasks DOM and display it
 ipcRenderer.on('received-items', (event, data) => { // IPC event listener
@@ -16,6 +18,8 @@ ipcRenderer.on('received-items', (event, data) => { // IPC event listener
     for (let task of data.tasks) {
         addTaskToBoard(task);
     }
+
+    updateTodayTaskCounter(0); // In case there's no tasks for today
 
     // Prepare date input
     let d = new Date();
@@ -115,6 +119,10 @@ function addTaskToBoard(task) {
             taskSubtitleElem.innerHTML += '<br>' + displayRepeat(task.repeatValue, task.repeatUnit);
         }
 
+        if(isToday(task.dueDate)) {
+            taskElem.dataset.today = '1';
+        }
+
         taskElem.appendChild(taskSubtitleElem);
     }
 
@@ -136,6 +144,21 @@ function addTaskToBoard(task) {
     });
 
     (isToday(task.dueDate) ? todayBoard : tasksBoard).append(taskElem);
+
+    if(isToday(task.dueDate)) {
+        todayBoard.append(taskElem);
+        updateTodayTaskCounter(1);
+    } else {
+        tasksBoard.append(taskElem)
+    }
+}
+
+function updateTodayTaskCounter(increment) {
+    todayTasksCounter += increment;
+    todayTasksCounterElement.innerText = (todayTasksCounter === 0 ? 'aucune ' : todayTasksCounter) + ' tâche';
+    if(todayTasksCounter > 1) {
+        todayTasksCounterElement.innerText += 's';
+    }
 }
 
 /**
@@ -294,6 +317,11 @@ function deleteTaskByUUID(uuid) {
         // (when we add the note to board, we add a data-uuid dataset, so we can use it to fetch the item--note element)
         for (const itemTask of document.getElementsByClassName('item--task')) {
             if (itemTask.dataset.uuid === uuid) {
+                // Update today's tasks counter
+                if (itemTask.dataset.today != null) {
+                    updateTodayTaskCounter(-1);
+                }
+
                 itemTask.remove();
                 break;
             }
@@ -310,6 +338,11 @@ function completeTask(uuid) {
     // Hide completed task
     for(const task of document.getElementsByClassName('item--task')){
         if(task.dataset.uuid === uuid){
+            // Update today's tasks counter
+            if (task.dataset.today != null) {
+                updateTodayTaskCounter(-1);
+            }
+
             task.remove();
             break;
         }

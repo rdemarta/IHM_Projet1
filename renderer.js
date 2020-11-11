@@ -102,7 +102,7 @@ function addTaskToBoard(task) {
 
     let taskButton = document.createElement("div");
     taskButton.className = "btn btn--task btn--task-item";
-    taskButton.innerHTML = 'Terminer';
+    taskButton.innerHTML = '<img src="images/complete.png" alt="Terminer">Terminer';
     taskButton.addEventListener('click', (event) => {
         completeTask(task.uuid);
     });

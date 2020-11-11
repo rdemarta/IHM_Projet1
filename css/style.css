@@ -65,7 +65,7 @@ body {
     margin-right: -0.7rem;
 }
 
-.btn--task-item img {
+.btn img {
     width: 20px;
     margin-right: 8px;
     margin-bottom: -3px;
@@ -280,11 +280,6 @@ body {
     left: -110px;
     font-size: 20px;
 }
-#btn__complete img {
-    width: 20px;
-    margin-right: 8px;
-    margin-bottom: -3px;
-}
 
 #btn__edit--note, #btn__edit--task {
     position: absolute;
@@ -292,22 +287,12 @@ body {
     left: -110px;
     font-size: 20px;
 }
-#btn__edit--note img, #btn__edit--task img {
-    width: 20px;
-    margin-right: 8px;
-    margin-bottom: -3px;
-}
 
 #btn__delete--note, #btn__delete--task {
     position: absolute;
     top: 180px;
     left: -110px;
     font-size: 16px;
-}
-#btn__delete--note img, #btn__delete--task img {
-    width: 20px;
-    margin-right: 8px;
-    margin-bottom: -3px;
 }
 
 .item--task {
